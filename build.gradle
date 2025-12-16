@@ -11,6 +11,7 @@ base {
 }
 
 repositories {
+  mavenLocal()
   maven { url = "https://maven.nucleoid.xyz" }
   maven { url = "https://maven.gegy.dev/" }
   maven { url = "https://jitpack.io" }
