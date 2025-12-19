@@ -1,6 +1,7 @@
 plugins {
   id 'fabric-loom' version '1.13.+'
   id "com.modrinth.minotaur" version "2.+"
+  id 'maven-publish'
 }
 
 version = project.mod_version + "+" + project.minecraft_version
@@ -72,3 +73,30 @@ if (System.getenv("MODRINTH")) {
   }
 }
 
+publishing {
+  publications {
+    mavenJava(MavenPublication) {
+      artifact(remapJar) {
+        builtBy remapJar
+      }
+      artifact(sourcesJar) {
+        builtBy remapSourcesJar
+      }
+    }
+  }
+
+  repositories {
+    def env = System.getenv()
+    if (env.MAVEN_URL) {
+      maven {
+        credentials {
+          username env.MAVEN_USERNAME
+          password env.MAVEN_PASSWORD
+        }
+        url env.MAVEN_URL
+      }
+    } else {
+      mavenLocal()
+    }
+  }
+}
